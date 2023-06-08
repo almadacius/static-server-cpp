@@ -5,3 +5,5 @@ node_modules
 
 c_modules
 build
+
+yarn-*
