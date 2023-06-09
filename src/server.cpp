@@ -1,5 +1,7 @@
 #include "crow.h"
+#include "fs.hpp"
 
+// ================================================
 using std::string;
 using std::cout;
 using std::endl;
@@ -10,7 +12,7 @@ using crow::response;
 
 // ================================================
 class Logger {
-public:
+  public:
   Logger() {}
 
   void log(string msg) {
@@ -20,10 +22,10 @@ public:
 
 // ================================================
 class Server {
-private:
+  private:
   Logger* logger;
 
-public:
+  public:
   Server() {
     logger = new Logger();
   }
@@ -41,7 +43,12 @@ public:
         logger->log("received request:");
         logger->log(path);
 
-        res.end("Hello world");
+        if(Fs::exists(path)) {
+          res.end("file exists");
+        }
+        else {
+          res.end("file does NOT exist");
+        }
       }
     );
 

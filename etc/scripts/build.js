@@ -11,13 +11,12 @@ class Operation {
 		try {
 			project.ensureDirs()
 
-			const { rootDir, srcDir, buildDir, modulesDir } = project.paths
+			const { srcDir, buildDir, modulesDir } = project.paths
 
-			const buildOp = new CppBuild({ baseDir: rootDir })
+			const buildOp = new CppBuild({ baseDir: srcDir })
 			await buildOp.build({
-				entrypoint: `${srcDir}/server.cpp`,
 				output: `${buildDir}/server`,
-				includes: `${modulesDir}`,
+				includes: modulesDir,
 			})
 		}
 		catch (err) {
