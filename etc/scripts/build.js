@@ -11,15 +11,17 @@ class Operation {
 		try {
 			project.ensureDirs()
 
-			const { srcDir, buildDir, modulesDir } = project.paths
+			const { rootDir, srcDir, buildDir, modulesDir } = project.paths
 
 			const buildOp = new CppBuild({
-				baseDir: srcDir,
+				baseDir: rootDir,
 				version: 20,
 			})
 			await buildOp.build({
+				srcDir,
 				output: `${buildDir}/server`,
 				includes: modulesDir,
+				// modulesDir: `${rootDir}/temp/local_modules`,
 			})
 		}
 		catch (err) {
