@@ -13,7 +13,10 @@ class Operation {
 
 			const { srcDir, buildDir, modulesDir } = project.paths
 
-			const buildOp = new CppBuild({ baseDir: srcDir })
+			const buildOp = new CppBuild({
+				baseDir: srcDir,
+				version: 20,
+			})
 			await buildOp.build({
 				output: `${buildDir}/server`,
 				includes: modulesDir,
