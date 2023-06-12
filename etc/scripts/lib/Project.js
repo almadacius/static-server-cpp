@@ -22,6 +22,7 @@ class Project {
 		)
 
 		Object.assign(this, {
+			cppVersion: 17,
 			paths,
 		})
 	}

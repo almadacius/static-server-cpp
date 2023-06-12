@@ -10,12 +10,13 @@ const { project } = require('./lib')
 // ================================================
 class Operation {
 	async buildProjectLegacy() {
+		const { cppVersion } = project
 		const { srcDir, rootDir, buildDir, modulesDir } = project.paths
 
 		const buildOp = new CppBuild({
 			baseDir: rootDir,
 			// baseDir: srcDir,
-			version: 11,
+			version: cppVersion,
 			srcDir,
 			output: `${buildDir}/server`,
 			includes: [
@@ -29,10 +30,11 @@ class Operation {
 
 	// ================================================
 	async buildServer() {
+		const { cppVersion } = project
 		const { rootDir, srcDir, buildDir, modulesDir } = project.paths
 
 		const buildOp = new CppBuild2({
-			version: 11,
+			version: cppVersion,
 			entrypoint: `${srcDir}/main.cpp`,
 			output: `${buildDir}/server`,
 
@@ -47,10 +49,11 @@ class Operation {
 	}
 
 	async buildTestStr() {
+		const { cppVersion } = project
 		const { rootDir, srcDir, buildDir, modulesDir } = project.paths
 
 		const buildOp = new CppBuild2({
-			version: 11,
+			version: cppVersion,
 			entrypoint: `${srcDir}/testStr.cpp`,
 			output: `${buildDir}/server`,
 
