@@ -60,6 +60,11 @@ void Server::run() {
     .port(3000)
     .multithreaded();
 
+  CROW_ROUTE(app, "/")([](response& res){
+    res.redirect("/index.html");
+    res.end();
+  });
+
   CROW_ROUTE(app, "/<path>")(
     [this](request& req, response& res, string path){
       // string path = req.url_params.get("path");
