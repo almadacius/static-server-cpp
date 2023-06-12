@@ -1,4 +1,4 @@
-// [builder] implementation: lib/server.cpp
+// [builder] implementation: core/server.cpp
 #ifndef SERVER_H
 #define SERVER_H
 

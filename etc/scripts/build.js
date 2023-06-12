@@ -71,7 +71,7 @@ class Operation {
 		const config = this.getBaseConfig()
 		const buildOp = new CppBuild2({
 			...config,
-			entrypoint: `${srcDir}/testStr.cpp`,
+			entrypoint: `${srcDir}/test/testStr.cpp`,
 		})
 		await buildOp.build()
 	}
@@ -84,7 +84,7 @@ class Operation {
 		const config = this.getBaseConfig()
 		const buildOp = new CppBuild2({
 			...config,
-			entrypoint: `${srcDir}/testFs.cpp`,
+			entrypoint: `${srcDir}/test/testFs.cpp`,
 		})
 		await buildOp.build()
 	}

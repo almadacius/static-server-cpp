@@ -1,4 +1,4 @@
-// [builder] implementation: lib/fs.cpp
+// [builder] implementation: shelf/fs.cpp
 #ifndef FS_H
 #define FS_H
 

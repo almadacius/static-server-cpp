@@ -1,4 +1,4 @@
-// [builder] implementation: lib/logger.cpp
+// [builder] implementation: shelf/logger.cpp
 #ifndef LOGGER_H
 #define LOGGER_H
 
