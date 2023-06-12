@@ -11,6 +11,7 @@
 
 // ================================================
 using std::runtime_error;
+using std::exception;
 
 using std::string;
 
@@ -24,6 +25,7 @@ Server::Server(const ServerConfig& config) : config(config) {
   SimpleLogger::logHeader(message);
 }
 
+// ================================================
 void Server::ensureDir() {
   string staticDir = config.staticDir;
 
@@ -32,6 +34,23 @@ void Server::ensureDir() {
   }
 }
 
+string Server::getRequestedFile(const string& path) {
+  string finalPath = str::concat(config.staticDir, "/", path);
+
+  SimpleLogger::logLine();
+  SimpleLogger::log(str::format("requested-> {}", path));
+  SimpleLogger::log(str::format("resolved->  {}", finalPath));
+  SimpleLogger::logLine();
+
+  if(fs::exists(finalPath)) {
+    return finalPath;
+  }
+  else {
+    throw runtime_error(str::format("file not found: '{}'", path));
+  }
+}
+
+// ================================================
 void Server::run() {
   this->ensureDir();
 
@@ -44,13 +63,15 @@ void Server::run() {
   CROW_ROUTE(app, "/<path>")(
     [this](request& req, response& res, string path){
       // string path = req.url_params.get("path");
-      SimpleLogger::log("received request:");
-      SimpleLogger::log(path);
 
-      if(fs::exists(path)) {
-        res.end("file exists");
+      try {
+        string file = getRequestedFile(path);
+        // review input paths for `..` later
+        res.set_static_file_info_unsafe(file);
+        res.end();
       }
-      else {
+      catch(exception& err) {
+        SimpleLogger::logError(err);
         res.end("file does NOT exist");
       }
     }

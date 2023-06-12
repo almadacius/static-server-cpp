@@ -3,6 +3,7 @@
 const { CppBuild, CppBuild2 } = require('@almadash/builder')
 const {
 	errorHandler: { NodeErrorHandler },
+	logger: { simpleLogger: logger },
 } = require('@almadash/shelf')
 
 const { project } = require('./lib')
@@ -49,40 +50,28 @@ class Operation {
 
 	// ================================================
 	async buildServer() {
-		const { cppVersion } = project
-		const { rootDir, srcDir, buildDir, modulesDir } = project.paths
+		const { srcDir } = project.paths
 
+		logger.logHeader('running main server')
+
+		const config = this.getBaseConfig()
 		const buildOp = new CppBuild2({
-			version: cppVersion,
+			...config,
 			entrypoint: `${srcDir}/main.cpp`,
-			output: `${buildDir}/server`,
-
-			baseDir: rootDir,
-			srcDir,
-			headerDir: srcDir,
-			includes: [
-				modulesDir,
-			],
 		})
 		await buildOp.build()
 	}
 
 	// ================================================
 	async buildTestStr() {
-		const { cppVersion } = project
-		const { rootDir, srcDir, buildDir, modulesDir } = project.paths
+		const { srcDir } = project.paths
 
+		logger.logHeader('running test <str>')
+
+		const config = this.getBaseConfig()
 		const buildOp = new CppBuild2({
-			version: cppVersion,
+			...config,
 			entrypoint: `${srcDir}/testStr.cpp`,
-			output: `${buildDir}/server`,
-
-			baseDir: rootDir,
-			srcDir,
-			headerDir: srcDir,
-			includes: [
-				modulesDir,
-			],
 		})
 		await buildOp.build()
 	}
@@ -90,8 +79,9 @@ class Operation {
 	async buildTestFs() {
 		const { srcDir } = project.paths
 
-		const config = this.getBaseConfig()
+		logger.logHeader('running test <fs>')
 
+		const config = this.getBaseConfig()
 		const buildOp = new CppBuild2({
 			...config,
 			entrypoint: `${srcDir}/testFs.cpp`,
@@ -106,7 +96,7 @@ class Operation {
 
 		project.ensureDirs()
 
-		const useTest = true
+		const useTest = false
 
 		if (useTest) {
 			// await this.buildProjectLegacy()

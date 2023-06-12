@@ -1,34 +1,39 @@
 #include "headers/logger.hpp"
 #include "headers/fs.hpp"
-// #include "headers/server.hpp"
+#include "headers/str.hpp"
+#include "headers/server.hpp"
 
 #include <stdexcept>
 #include <iostream>
-#include <filesystem>
 
 using std::runtime_error;
 
 // ================================================
+// separated for commenting and testing without the server header
+void runServer(const string& execPath, string& staticDir) {
+  ServerConfig config;
+  config.execPath = execPath;
+  config.staticDir = staticDir;
+
+  Server* server = new Server(config);
+  server->run();
+}
+
 void mainOperation(int argc, char* argv[]) {
   if(argc < 2) {
     throw runtime_error("base dir to serve not provided");
   }
 
-  string execPathRel = argv[0];
-  string execPathAbs = fs::absPath(execPathRel);
+  string execPath = fs::absPath(argv[0]);
+  string execDir = fs::dirname(execPath);
 
-  std::cout << "BB " << execPathAbs << std::endl;
+  string staticDirRel = argv[1];
+  string staticDir = str::concat(execDir, "/", staticDirRel);
 
-  std::cout << "AAA " << argv[0] << std::endl;
-  std::cout << "AA " << argv[1] << std::endl;
-
-  // ServerConfig config;
-  // config.staticDir = argv[1];
-  //
-  // Server* server = new Server(config);
-  // server->run();
+  runServer(execPath, staticDir);
 }
 
+// ================================================
 int main(int argc, char* argv[]) {
   SimpleLogger::tryRun([argc, argv](){
     mainOperation(argc, argv);
