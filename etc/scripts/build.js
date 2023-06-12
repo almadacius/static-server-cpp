@@ -29,6 +29,25 @@ class Operation {
 	}
 
 	// ================================================
+	getBaseConfig() {
+		const { cppVersion } = project
+		const { rootDir, srcDir, buildDir, modulesDir } = project.paths
+
+		return {
+			version: cppVersion,
+			entrypoint: `${srcDir}/main.cpp`,
+			output: `${buildDir}/server`,
+
+			baseDir: rootDir,
+			srcDir,
+			headerDir: srcDir,
+			includes: [
+				modulesDir,
+			],
+		}
+	}
+
+	// ================================================
 	async buildServer() {
 		const { cppVersion } = project
 		const { rootDir, srcDir, buildDir, modulesDir } = project.paths
@@ -48,6 +67,7 @@ class Operation {
 		await buildOp.build()
 	}
 
+	// ================================================
 	async buildTestStr() {
 		const { cppVersion } = project
 		const { rootDir, srcDir, buildDir, modulesDir } = project.paths
@@ -67,6 +87,18 @@ class Operation {
 		await buildOp.build()
 	}
 
+	async buildTestFs() {
+		const { srcDir } = project.paths
+
+		const config = this.getBaseConfig()
+
+		const buildOp = new CppBuild2({
+			...config,
+			entrypoint: `${srcDir}/testFs.cpp`,
+		})
+		await buildOp.build()
+	}
+
 	// ================================================
 	async run() {
 		const errorHandler = new NodeErrorHandler({ rootDir: `${__dirname}/..` })
@@ -74,9 +106,16 @@ class Operation {
 
 		project.ensureDirs()
 
-		// await this.buildProjectLegacy()
-		// await this.buildTestStr()
-		await this.buildServer()
+		const useTest = true
+
+		if (useTest) {
+			// await this.buildProjectLegacy()
+			// await this.buildTestStr()
+			await this.buildTestFs()
+		}
+		else {
+			await this.buildServer()
+		}
 
 		process.exit(0)
 	}

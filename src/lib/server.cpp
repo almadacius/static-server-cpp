@@ -20,21 +20,14 @@ using crow::response;
 
 // ================================================
 Server::Server(const ServerConfig& config) : config(config) {
-  // string message = str::formatString("static dir: {}", config.staticDir);
-  // str::formatString("static dir: {}", "ser", "aber");
-  // SimpleLogger::logHeader(message);
-
-  // string message = str::concatenate("aa", "bb", 25);
-  // string message = str::concatenate("aa", "bb");
-  string message = str::concat("aa");
+  string message = str::format("static dir: {}", config.staticDir);
   SimpleLogger::logHeader(message);
-  // str::concatenate("a");
 }
 
 void Server::ensureDir() {
   string staticDir = config.staticDir;
 
-  if(!Fs::exists(staticDir)) {
+  if(!fs::exists(staticDir)) {
     throw runtime_error("static dir does NOT exist");
   }
 }
@@ -54,7 +47,7 @@ void Server::run() {
       SimpleLogger::log("received request:");
       SimpleLogger::log(path);
 
-      if(Fs::exists(path)) {
+      if(fs::exists(path)) {
         res.end("file exists");
       }
       else {

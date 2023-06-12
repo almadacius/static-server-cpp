@@ -6,9 +6,12 @@
 
 using std::string;
 
-class Fs {
-  public:
-  static bool exists(string& path);
-};
+namespace fs {
+  bool exists(const string& path);
+
+  string absPath(const string& path);
+
+  string dirname(const string& path);
+}
 
 #endif
