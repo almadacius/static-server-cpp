@@ -1,3 +1,4 @@
+// [builder] implementation: lib/fs.cpp
 #ifndef FS_H
 #define FS_H
 
